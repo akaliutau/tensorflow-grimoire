@@ -2,9 +2,9 @@
 
 This repository explores the fundamentals of Deep Learning on examples using TensorFlow framework
 
-# Fundamentals of Tensorflow and numpy
+# Fundamentals of ML, Tensorflow and numpy
 
-Parameters in Dense Layers
+## Parameters in Dense Layers
 
 Dense (or fully connected) layers in neural networks are the primary contributors to the total parameter count. 
 Here's how the number of parameters is calculated for a dense layer:
@@ -66,8 +66,41 @@ Notebook:
 
 # Deep Learning in Computer Vision tasks
 
+## Architecture
+
+CNN networks are built on the basis of hierarchy of features, constructed on each level via
+```
+ layers.Conv2D(filters=32, kernel_size=3, activation="relu")(inputs)
+```
+where
+
+`filters=32`: Number of Filters (Output Channels) - specifies how many different filters are applied to the input. 
+In this case, we have 32 filters. Each filter is a unique feature detector, f.e. some filters might be good at detecting 
+horizontal edges, others at detecting vertical edges, and others might look for textures, corners, etc.
+For each filter, the convolution operation creates a new output "image". 
+Because we have 32 filters, our layer will output 32 new images (aka "feature maps" - the output 
+will have the shape (?, ?, 32)
+
+`kernel_size=3` : Size of the Filter (Kernel) - defines the size of each filter. kernel_size=3 means each filter is a 3x3 grid.
+The filter has params and is slid over the input image. At each location, a dot product is calculated between the 3x3 
+input "window" of the image and the 3x3 filter's numbers and becomes one pixel value in the output feature map.
+
+## How the Filters are Generated
+
+Filters have to be the _independent_ filters. 
+Each of these 32 filters will learn a different set of weights, resulting in a distinct feature map.
+
+Initialization: When layers.Conv2D is created, TensorFlow (or the underlying framework) will:
+1) Create 32 separate filters.
+2) Each filter will be a 3x3 matrix.
+3) The initial values within each 3x3 matrix are typically randomly initialized. This randomness is _crucial_ because it 
+   allows different filters to learn different features (via Xavier/Glorot or He initialization strategies)
+
 Notebook:
 [Deep Learning in Computer Vision tasks](./notebooks/dl_in_computer_vision_tasks.ipynb)
+
+## Interpretability of CNN
+
 
 ## 
 
