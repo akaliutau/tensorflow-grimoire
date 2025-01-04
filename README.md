@@ -101,8 +101,36 @@ Notebook:
 
 ## Interpretability of CNN
 
+Interpretability means the ability to track back the causes and weights which resulted in specific decision made by NN.
 
-## 
+In CNNs, feature maps are the output of each convolutional layers (type `keras.src.layers.convolutional.conv2d.Conv2D`). 
+They represent the learned features of the input image at different levels of abstraction. 
+The deeper into the network, the more abstract the features become.
+
+Via extracting these specific layers one can generate Class Activation Maps (CAMs). CAMs are visualizations 
+that highlight which parts of an image are the most important ones for classification.
+
+For example, in case of Xception NN, `block14_sepconv2_act` is the activation output after the 2nd separable convolution 
+in the 14th block. This layer typically has the smallest spatial resolution but the richest semantic content right before 
+the classification.
+
+Note: choosing the last convolutional layer is _crucial_ for CAM generation. 
+The feature maps at this stage of the network contain a spatial encoding of features relevant for the classification task 
+but also are still spatially coherent and can be scaled back onto the input image (i.e. blurred, but points to the most
+important region on the picture)
+
+To create a CAM, the new model has to take the same input as the original model, 
+but the output will be a feature map produced by the last_conv_layer instead of the classification probabilities.
+
+We need to compute the gradients of the predicted class probability (top_class_channel) with respect to the activations 
+of the watched convolutional layer (last_conv_layer_output). 
+This gradient tells us how much each spatial location in the convolutional layer's output contributed to the 
+model's prediction for the chosen class.
+
+Notebook:
+[Interpretability of CNN](./notebooks/interpretability_of_cnn.ipynb)
+
+# 
 
 
 
