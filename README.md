@@ -63,6 +63,16 @@ stored in TensorFlow variables, but those variables are not updated via backprop
 Notebook:
 [Sequential Models, Functional API and Subclassing](./notebooks/advanced-tf-keras.ipynb)
 
+Keynotes:
+
+* Keras offers different ways to build architectures of progressive level of complexity
+* One can build models via the Sequential class, via the Functional API, or by subclassing the Model class. 
+* In-built `fit()` and `evaluate()` methods are the simplest ones to train and evaluate a model
+* Keras callbacks mechanism provides a simple way to monitor train progress of models and automatically take action 
+based on the state of the model (fe. to save the best one)
+* Full control of fit() is acquired via overriding the `train_step()` method.
+* One can write own training loops entirely from scratch (fe. when implementing brand-new training algorithms and
+ deigning new training regime)
 
 # Deep Learning in Computer Vision tasks
 
@@ -130,7 +140,23 @@ model's prediction for the chosen class.
 Notebook:
 [Interpretability of CNN](./notebooks/interpretability_of_cnn.ipynb)
 
-# 
+# Timeseries tasks
+
+
+Notebook:
+[Interpretability of CNN](./notebooks/time_series.ipynb)
+
+# NLP tasks, or Text processing
+
+
+
+Notebook:
+[Interpretability of CNN](./notebooks/nlp_models.ipynb)
+
+# Transformers
+
+Notebook:
+[Interpretability of CNN](./notebooks/transformers.ipynb)
 
 
 
