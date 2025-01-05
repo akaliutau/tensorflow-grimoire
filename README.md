@@ -142,21 +142,86 @@ Notebook:
 
 # Timeseries tasks
 
+LSTM can be described as a chain of cells processing the sequence. 
+The cells learn to process the sequence sequentially. Each cell learns to adapt its internal state based on the current input 
+and the previous state, allowing it to understand the order and context of the sequence. 
+This "contextualized" processing enables the prediction of the next step based on its learned sequence model and output at each step.
+
+LSTM layer is a stack of LSTM cells (usually defined by 'units' parameter in libraries like Tensorflow/Pytorch) 
+where cells are repeated for every element of input sequence and every stack of cell process current sequence of input.
+
+
+
+The power of LSTM is to solve the issues of:
+
+* Vanishing Gradients: During backpropagation (the learning process), the gradients can become extremely small as they 
+flow backward through time. This makes it difficult for the network to learn long-range dependencies 
+(relationships between distant elements in the sequence). The earlier layers get very little signal for learning.
+* Exploding Gradients: Gradients can also become extremely large, leading to unstable learning.
+
+LSTMs address these issues by introducing the concept of "memory" and "gates." Unlike traditional RNNs which use a single hidden state that is overwritten at every step, LSTMs have both a hidden state and a cell state.
+
+* Cell State: This is the long-term memory that can flow from one time step to the next with minimal changes, gated by forget gate.
+* Hidden State: This is a short-term memory that is influenced by current input and past cell state. 
+  This state influences the output of the current time step
+
+* Gates: These are parameterized NNs that control how information flows into, out of, and within the cell state. 
+   The three main types of gates are (marked by sub-index, f.e. W_f):
+     1)   **Forget Gate**: Determines what information to remove from the cell state.
+     2)   **Input Gate**: Determines what new information to add to the cell state.
+     3)   **Output Gate**: Determines what information to output from the cell state into the hidden state.
+
+
+1) Forget Gate (f_t):
+
+The forget gate decides what information to discard from the cell state (C_t-1).
+It takes h_t-1 and x_t as input and passes them through a sigmoid activation function (output between 0 and 1).
+
+The output f_t acts as a filter for C_t-1 where 1 keeps the information and 0 removes the information
+
+Example: In a language model, it might learn to forget the gender of a subject when starting a new sentence
+
+2) Input Gate (i_t and C_t)
+
+i_t: The input gate layer decides which values to update in the cell state
+
+Example: In a language model, it might learn to add a new subject into the cell state for the current sentence
+
+3) Output Gate (o_t):
+
+The output gate controls what information is outputted from the cell state into the hidden state.
+
+Example. Let's assume `[f0, f1, f2, f3]` is the input sequence and the LSTM stack consists of 3 cells.
+Initialization: The LSTM's hidden state and cell state are initialized (often to zeros).
+Time Step Processing:
+
+For f0: The LSTM cell takes f0 and the initial hidden and cell states. It updates its hidden state and cell state and produces output.
+For f1: The LSTM cell takes f1 and the updated hidden and cell state (from f0 processing). It updates its hidden state and cell state and produces output.
+And so on... This continues for all the sequence elements (e.g. f2 in our case).
+
+Layer Output:
+
+* If return_sequences=False: the output of the LSTM layer is the last hidden state of the LSTM cell after processing all of input sequences.
+* If return_sequences=True: the output of the LSTM layer is all hidden states of the LSTM cell after processing all of input sequence.
+
+
+
 
 Notebook:
-[Interpretability of CNN](./notebooks/time_series.ipynb)
+[Timeseries analysis](./notebooks/time_series.ipynb)
 
 # NLP tasks, or Text processing
 
 
 
 Notebook:
-[Interpretability of CNN](./notebooks/nlp_models.ipynb)
+[NLP models](./notebooks/nlp_models.ipynb)
 
 # Transformers
 
 Notebook:
-[Interpretability of CNN](./notebooks/transformers.ipynb)
+[Transformers](./notebooks/transformers.ipynb)
 
 
-
+# References
+(Note, the key papers are duplicated in the folder [papers](./papers) if license allows)
