@@ -150,8 +150,6 @@ This "contextualized" processing enables the prediction of the next step based o
 LSTM layer is a stack of LSTM cells (usually defined by 'units' parameter in libraries like Tensorflow/Pytorch) 
 where cells are repeated for every element of input sequence and every stack of cell process current sequence of input.
 
-
-
 The power of LSTM is to solve the issues of:
 
 * Vanishing Gradients: During backpropagation (the learning process), the gradients can become extremely small as they 
@@ -205,8 +203,6 @@ Layer Output:
 * If return_sequences=True: the output of the LSTM layer is all hidden states of the LSTM cell after processing all of input sequence.
 
 
-
-
 Notebook:
 [Timeseries analysis](./notebooks/time_series.ipynb)
 
@@ -219,9 +215,53 @@ Notebook:
 
 # Transformers
 
+Transformer as a Transformation Between Embedding Spaces:
+
+Transformer performs a transformation of embedding spaces using the following steps:
+
+1) Input Embedding:
+    The encoder begins by mapping input tokens into an initial embedding space. Let's call this space E_input.
+2) Encoder Transformation:
+    The encoder then applies a series of self-attention layers and feedforward networks. These layers are all 
+    essentially linear transformations (through the feedforward networks) combined with weighted aggregates via the attention. 
+    This process transforms the input embeddings from E_input into a higher-level representation, let's call it _E_encoder_. 
+    _E_encoder_ is a representation of the input in the form of context-aware embeddings.
+3) Decoder Transformation:
+    The decoder takes the E_encoder representation from the encoder and the target embeddings as inputs. 
+    The decoder then uses attention mechanisms, and feedforward networks to transform and translate this information 
+    to a new embedding space. Let's call this _E_output_. The E_output space represents the target sequence representation.
+4) Final Output Transformation:
+    Finally, a linear layer often projects this space E_output to the desired target space (e.g. probability scores for words in a vocabulary).
+
+Constraints:
+
+* Transformation Parameters: The parameters (weights and biases) of the Transformer layers and attention heads are 
+the "transformation parameters." These parameters are learned during training through backpropagation, guided by the loss function.
+* Loss Function: The loss function defines how "good" the transformation is. 
+  It quantifies the difference between the model's output and the true target. 
+  For example, cross-entropy loss is often used for classification (like next-word prediction) or sequence-to-sequence tasks. 
+  The loss acts as a constraint, forcing the transformation to map the input space to the correct output space according to your task.
+
+Key Insights:
+
+Abstract Representation: The Transformer's power comes from its ability to learn meaningful intermediate representations 
+(E_encoder and E_output). These are not simply direct mapping between words in different spaces; 
+instead, they are abstract representations that encode syntactic and semantic relationships.
+
+Learned Transformations: The magic of neural networks is that these transformation operations are learned from data and 
+guided by a loss function. That's why transformers can perform translation, text generation, and other sophisticated tasks.
+
+Generalization: The learned transformations can often generalize to unseen data, allowing the model to perform well 
+on new examples from similar distributions.
+
+
 Notebook:
 [Transformers](./notebooks/transformers.ipynb)
 
+# Transformers for translation
+
+Notebook:
+TBA
 
 # References
 (Note, the key papers are duplicated in the folder [papers](./papers) if license allows)
