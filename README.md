@@ -215,23 +215,69 @@ Notebook:
 
 # Transformers
 
-Transformer as a Transformation Between Embedding Spaces:
+## Notes on embedding spaces
+
+
+Let's define the original notion/vector as the initial data representation, which might be raw pixels of an image, 
+words in a vocabulary, or any other kind of structured data.
+
+Embedding Space is a lower-dimensional space where data points are mapped to, with the goal of having data points 
+with similar meaning or relationships placed closer together in this space. This is often learned through training.
+
+The embedding space isn't just some arbitrary mapping; it's designed to highlight the features relevant to the task. 
+These features are "expressive" because they capture the important nuances of the data.
+
+Embedding space (or embedding representation) can be viewed as the space of forms or expressive features, which the 
+original notion/vector can be factored into. For example, in CNN the space of filters on each layer is effectively the 
+representation space, and the original picture can be successfully represented as a set of weighted filters, instead of
+grid of pixel values.
+
+The example of CNNs provides an excellent illustration:
+
+Consider the original picture. A grid of pixel values is essentially a very high-dimensional, low-level representation. 
+It lacks abstraction and semantic meaning.
+
+CNN filters are designed to detect specific patterns (edges, textures, shapes, etc.) in the input image. 
+These filters are the "forms" or "expressive features" the statement is talking about.
+Each layer in a CNN effectively creates its own embedding space. The activations from each filter at a particular layer 
+can be seen as a feature vector representing the image at that level of abstraction.
+
+The CNN learns weights for these filters through backpropagation. The activations of the filters, scaled by those weights, 
+represent a higher-level and more "meaningful" representation of the image than the original pixels. 
+Instead of grid of pixel values, the image is now successfully represented as weighted combination of filters which 
+detects the underlying feature of the image.
+
+Why this is important
+
+* Dimensionality Reduction: Embeddings often have a much lower dimension than the original data, allowing us to handle 
+  large datasets more efficiently and avoid the "curse of dimensionality."
+* Semantic Meaning: Embedding spaces are designed to capture the semantic meaning of the data.
+  Similar items are grouped together, making it easier for models to learn and make inferences.
+* Feature Extraction: The process of learning an embedding essentially learns the relevant features for the given task. 
+  This eliminates the need for manual feature engineering.
+* Transfer Learning: Pre-trained embeddings, learned on large datasets, can be used for new tasks, 
+  leveraging the knowledge about feature spaces that have already been acquired.
+* Generative Capabilities: By working with the embedding space, we can manipulate and generate new instances of the data. 
+  For example, with image embeddings, one can interpolate between different image embeddings to generate similar images.
+
+
+## Transformer as a Transformation Between Embedding Spaces:
 
 Transformer performs a transformation of embedding spaces using the following steps:
 
 1) Input Embedding:
-    The encoder begins by mapping input tokens into an initial embedding space. Let's call this space E_input.
+    The encoder begins by mapping input tokens into an initial embedding space. Let's call this space _E_input_.
 2) Encoder Transformation:
     The encoder then applies a series of self-attention layers and feedforward networks. These layers are all 
     essentially linear transformations (through the feedforward networks) combined with weighted aggregates via the attention. 
-    This process transforms the input embeddings from E_input into a higher-level representation, let's call it _E_encoder_. 
+    This process transforms the input embeddings from _E_input_ into a higher-level representation, let's call it _E_encoder_. 
     _E_encoder_ is a representation of the input in the form of context-aware embeddings.
 3) Decoder Transformation:
     The decoder takes the E_encoder representation from the encoder and the target embeddings as inputs. 
     The decoder then uses attention mechanisms, and feedforward networks to transform and translate this information 
     to a new embedding space. Let's call this _E_output_. The E_output space represents the target sequence representation.
 4) Final Output Transformation:
-    Finally, a linear layer often projects this space E_output to the desired target space (e.g. probability scores for words in a vocabulary).
+    Finally, a linear layer often projects this space _E_output_ to the desired target space (e.g. probability scores for words in a vocabulary).
 
 Constraints:
 
